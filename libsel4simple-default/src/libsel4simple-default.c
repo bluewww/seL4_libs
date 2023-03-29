@@ -56,9 +56,9 @@ void *simple_default_get_frame_mapping(void *data, void *paddr, int size_bits)
     return NULL;
 }
 
-seL4_Error simple_default_set_ASID(void *data, seL4_CPtr vspace)
+seL4_Error simple_default_set_ASID(void *data, seL4_CPtr vspace, seL4_Domain domain)
 {
-    return seL4_ARCH_ASIDPool_Assign(seL4_CapInitThreadASIDPool, vspace);
+    return seL4_ARCH_ASIDPool_Assign(seL4_CapInitThreadASIDPool, vspace, domain);
 }
 
 int simple_default_cap_count(void *data)

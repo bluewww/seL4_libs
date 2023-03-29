@@ -423,9 +423,9 @@ static seL4_CPtr get_asid_pool(seL4_CPtr asid_pool)
     return asid_pool;
 }
 
-static seL4_CPtr assign_asid_pool(seL4_CPtr asid_pool, seL4_CPtr pd)
+static seL4_CPtr assign_asid_pool(seL4_CPtr asid_pool, seL4_CPtr pd, seL4_Domain domain)
 {
-    int error = seL4_ARCH_ASIDPool_Assign(get_asid_pool(asid_pool), pd);
+    int error = seL4_ARCH_ASIDPool_Assign(get_asid_pool(asid_pool), pd, domain);
     if (error) {
         ZF_LOGE("Failed to assign asid pool\n");
     }
@@ -511,7 +511,7 @@ int sel4utils_configure_process_custom(sel4utils_process_t *process, vka_t *vka,
 
         /* assign an asid pool */
         if (!config_set(CONFIG_X86_64) &&
-            assign_asid_pool(config.asid_pool, process->pd.cptr) != seL4_NoError) {
+            assign_asid_pool(config.asid_pool, process->pd.cptr, config.domain) != seL4_NoError) {
             goto error;
         }
     } else {

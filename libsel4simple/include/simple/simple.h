@@ -74,7 +74,7 @@ typedef void *(*simple_get_frame_info_fn)(void *data, void *paddr, int size_bits
  *
  * @param vspace to assign
 */
-typedef seL4_Error(*simple_ASIDPool_assign_fn)(void *data, seL4_CPtr vspace);
+typedef seL4_Error(*simple_ASIDPool_assign_fn)(void *data, seL4_CPtr vspace, seL4_Domain domain);
 
 /**
  * Get the total number of caps this library can address
@@ -309,7 +309,7 @@ static inline seL4_Error simple_get_IRQ_handler(simple_t *simple, int irq, cspac
     return simple->arch_simple.irq(simple->data, irq, path.root, path.capPtr, path.capDepth);
 }
 
-static inline seL4_Error simple_ASIDPool_assign(simple_t *simple, seL4_CPtr vspace)
+static inline seL4_Error simple_ASIDPool_assign(simple_t *simple, seL4_CPtr vspace, seL4_Domain domain)
 {
     if (!simple) {
         ZF_LOGE("Simple is NULL");
@@ -320,7 +320,7 @@ static inline seL4_Error simple_ASIDPool_assign(simple_t *simple, seL4_CPtr vspa
         return seL4_InvalidArgument;
     }
 
-    return simple->ASID_assign(simple->data, vspace);
+    return simple->ASID_assign(simple->data, vspace, domain);
 }
 
 static inline
